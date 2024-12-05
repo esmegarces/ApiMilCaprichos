@@ -31,7 +31,7 @@ class Ingredient extends Model
 
 	public function desserts()
 	{
-		return $this->belongsToMany(Dessert::class, 'dessert_ingredient', 'ID_DESSERT', 'ID_INGREDIENT')
+		return $this->belongsToMany(Dessert::class, 'dessert_ingredient', 'ID_INGREDIENT', 'ID_DESSERT')
 					->withPivot('ID', 'QUANTITY', 'UNIT_OF_MEASURE');
 	}
 }

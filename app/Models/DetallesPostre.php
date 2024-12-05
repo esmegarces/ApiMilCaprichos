@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ID
  * @property string $NAME_DESSERT
  * @property string $NAME_CATEGORY
+ * @property string $IMAGE_URL
  * @property array|null $INGREDIENTS
  * @property string $DESCRIPTION
  * @property Carbon|null $DATE_ADDED
- * @property string $NAME_PERSON
+ * @property string|null $NAME_PERSON
  *
  * @package App\Models
  */
@@ -38,6 +39,7 @@ class DetallesPostre extends Model
 		'ID',
 		'NAME_DESSERT',
 		'NAME_CATEGORY',
+		'IMAGE_URL',
 		'INGREDIENTS',
 		'DESCRIPTION',
 		'DATE_ADDED',

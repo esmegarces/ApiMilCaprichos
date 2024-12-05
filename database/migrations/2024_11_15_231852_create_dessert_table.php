@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('dessert', function (Blueprint $table) {
             $table->integer('ID', true);
             $table->integer('ID_CATEGORY')->index('id_category');
-            $table->string('NAME', 20);
+            $table->string('NAME', 40);
             $table->text('DESCRIPTION');
             $table->dateTime('DATE_ADDED')->nullable()->useCurrent();
+            $table->integer('ID_PERSON')->index('id_person');
         });
     }
 

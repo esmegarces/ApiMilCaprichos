@@ -8,7 +8,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Person
@@ -29,8 +32,12 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Person extends Model
+
+
+class Person extends Authenticatable
 {
+	use HasApiTokens, HasFactory, Notifiable;
+
 	protected $table = 'person';
 	protected $primaryKey = 'ID';
 
@@ -54,9 +61,15 @@ class Person extends Model
 		'remember_token'
 	];
 
+	protected function casts(): array
+	{
+		return [
+			'password' => 'hashed',
+		];
+	}
+
 	public function desserts()
 	{
-		return $this->belongsToMany(Dessert::class, 'person_dessert', 'ID_PERSON', 'ID_DESSERT')
-					->withPivot('ID_VARIANT');
+		return $this->hasMany(Dessert::class, 'ID_PERSON');
 	}
 }

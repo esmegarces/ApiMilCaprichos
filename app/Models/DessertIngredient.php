@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $QUANTITY
  * @property string|null $UNIT_OF_MEASURE
  * 
- * @property Dessert $dessert
  * @property Ingredient $ingredient
+ * @property Dessert $dessert
  *
  * @package App\Models
  */
@@ -41,13 +41,13 @@ class DessertIngredient extends Model
 		'UNIT_OF_MEASURE'
 	];
 
-	public function dessert()
-	{
-		return $this->belongsTo(Dessert::class, 'ID_DESSERT');
-	}
-
 	public function ingredient()
 	{
 		return $this->belongsTo(Ingredient::class, 'ID_INGREDIENT');
+	}
+
+	public function dessert()
+	{
+		return $this->belongsTo(Dessert::class, 'ID_DESSERT');
 	}
 }

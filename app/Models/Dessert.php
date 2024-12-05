@@ -18,10 +18,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $NAME
  * @property string $DESCRIPTION
  * @property Carbon|null $DATE_ADDED
+ * @property int $ID_PERSON
+ * @property string $IMAGE_URL
  * 
  * @property Category $category
+ * @property Person $person
  * @property Collection|Ingredient[] $ingredients
- * @property Collection|Person[] $people
  *
  * @package App\Models
  */
@@ -33,14 +35,17 @@ class Dessert extends Model
 
 	protected $casts = [
 		'ID_CATEGORY' => 'int',
-		'DATE_ADDED' => 'datetime'
+		'DATE_ADDED' => 'datetime',
+		'ID_PERSON' => 'int'
 	];
 
 	protected $fillable = [
 		'ID_CATEGORY',
 		'NAME',
 		'DESCRIPTION',
-		'DATE_ADDED'
+		'DATE_ADDED',
+		'ID_PERSON',
+		'IMAGE_URL'
 	];
 
 	public function category()
@@ -48,15 +53,14 @@ class Dessert extends Model
 		return $this->belongsTo(Category::class, 'ID_CATEGORY');
 	}
 
-	public function ingredients()
+	public function person()
 	{
-		return $this->belongsToMany(Ingredient::class, 'dessert_ingredient', 'ID_INGREDIENT', 'ID_DESSERT')
-					->withPivot('ID', 'QUANTITY', 'UNIT_OF_MEASURE');
+		return $this->belongsTo(Person::class, 'ID_PERSON');
 	}
 
-	public function people()
+	public function ingredients()
 	{
-		return $this->belongsToMany(Person::class, 'person_dessert', 'ID_DESSERT', 'ID_PERSON')
-					->withPivot('ID_VARIANT');
+		return $this->belongsToMany(Ingredient::class, 'dessert_ingredient', 'ID_DESSERT', 'ID_INGREDIENT')
+					->withPivot('ID', 'QUANTITY', 'UNIT_OF_MEASURE');
 	}
 }
