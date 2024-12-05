@@ -22,6 +22,9 @@ Route::get('/saludo', function () {
     //Route de agregar una persona
     Route::post('/agregar_persona', [PersonController::class, 'addPerson']);
 
+    //Route que muestra la informacion del usuario buscandolo por su id
+    Route::get('/infoPerson/{id}', [PersonController::class, 'infoPerson']);
+
 
     Route::middleware(['api', 'auth:sanctum'])->group(function () {
     // Route DetallesPostre

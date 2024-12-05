@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use DB;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Void_;
 use Validator;
 
 class PersonController extends Controller
@@ -29,6 +30,7 @@ class PersonController extends Controller
         ], 200);
     }
 
+
     //Agregar una persona
 
     public function addPerson(Request $request)
@@ -43,7 +45,7 @@ class PersonController extends Controller
             'EMAIL' => 'required|email|max:40', // Valida unicidad de email
             'password' => 'required|string|min:8|max:40' // Mínimo de seguridad
         ]);
-    
+
         // Si el validador falla, se envía un mensaje de error
         if ($validator->fails()) {
             return response()->json([
@@ -51,10 +53,10 @@ class PersonController extends Controller
                 'Errores' => $validator->errors()
             ], 400);
         }
-    
+
         // Inicializar la transacción para registrar los datos de la persona
         DB::beginTransaction();
-    
+
         try {
             // Crear la nueva instancia de Person
             $person = new Person();
@@ -66,15 +68,15 @@ class PersonController extends Controller
             $person->EMAIL = $request->EMAIL;
             $person->password = bcrypt($request->password); // Hashea la contraseña
             $person->save();
-    
+
             // Confirmar la transacción
             DB::commit();
-    
+
             return response()->json([
                 'Mensaje' => 'Persona registrada exitosamente',
                 'Persona' => $person
             ], 201);
-    
+
         } catch (\Exception $e) {
             // Revertir la transacción en caso de error
             DB::rollBack();
@@ -84,6 +86,29 @@ class PersonController extends Controller
             ], 500);
         }
     }
-    
 
+    //Mostrar la información de un usuario en específico
+    public function infoPerson(Request $request)
+    {
+        //Obtener el ID del usuario
+        $id = $request->id;
+
+        //Buscar el usuario en la base de datos
+        $person = Person::find($id);
+
+        //Validar si el usuario existe
+        if (!$person) {
+            return response()->json([
+                'Mensaje' => 'No se ha encontrado el usuario'
+            ], 404);
+        }
+
+        return response()->json([
+            'Mensaje' => 'Usuario encontrado',
+            'Usuario' => $person
+        ], 200);
+
+
+
+    }
 }
